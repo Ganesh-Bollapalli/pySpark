@@ -1,0 +1,9 @@
+import pyspark
+from pyspark.sql import *
+from pyspark.sql.functions import *
+#from pyspark.ml.stat import conv,corr
+spark=SparkSession.builder.appName("gani").getOrCreate()
+df=spark.range(0,10).withColumn("rand1", rand(seed=10)).withColumn("rand2", randn(seed=27))
+df2=df.drop("id")
+df2.show()
+df.stat.Convolution("rand1","rand2").show()

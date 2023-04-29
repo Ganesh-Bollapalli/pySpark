@@ -1,0 +1,11 @@
+import pyspark
+from pyspark.sql import SparkSession, Row
+spark=SparkSession.builder.appName("gani").getOrCreate()
+schema=["ID","Name","Age","Area of interest"]
+data=[(1,"jack",22,"Data science"),(2,"Luke",21,"Data analytics"),(3, "Leo",24,"Microe services"),(4,"Mark",21, "data analytics")]
+df=spark.createDataFrame(data, schema)
+df.show()
+df_age=df.describe("Age")
+df_age.write.parquet("/projects/challenge/Age")
+df_2=df.select("ID","Name","Age").orderBy("Name")
+df_2.write.parquet("/projects/challenge/NameSorted")

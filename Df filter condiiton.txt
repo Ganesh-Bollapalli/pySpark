@@ -1,0 +1,9 @@
+import pyspark
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("gani").getOrCreate()
+df=spark.read.json('/projects/challenge/emp.json')
+df.show()
+df.write.parquet("/projects/challenge/Employees")
+df_new=df.filter(df.stream=="JAVA")
+df_new.show()
+df_new.write.parquet("/projects/challenge/JavaEmployees")

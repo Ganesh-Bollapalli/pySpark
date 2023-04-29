@@ -1,0 +1,6 @@
+import pyspark
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("ganesh").getOrCreate()
+df=spark.read.option("header","true").option("inferschema","true").format("json").load('/projects/challenge/People.json')
+df.show()
+df.coalesce(1).write.parquet('/projects/challenge/data')

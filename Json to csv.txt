@@ -1,0 +1,22 @@
+import pyspark
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("ganesh").getOrCreate()
+df=spark.read.format("json").load('/projects/challenge/People.json')
+df.show()
+df.coalesce(1).write.csv('/projects/challenge/Result',mode="overwrite", header=True)
+
+
+////
+read.csv/json/parquet("path")
+read.format("csv/json/parquet").load("path")
+
+# csv reading - inside csv (header=True, inferschema=True, seperator=| ) or we can mention in options but with comma in btw and "" for all
+# json reading - inside json (header=True, inferschema=True, multiline=True ) or we can mention in options but with comma in btw and "" for all
+# parquet reading - inside parquet (header=True, inferschema=True) or we can mention in options but with comma in btw and "" for all
+
+# csv writing - inside csv (header=True, mode=error/ignore/overwrite) or we can mention in options but with comma in btw and "" for all
+# json writing - inside json (header=True, mode=error/ignore/overwrite) or we can mention in options but with comma in btw and "" for all
+# parquet writing - inside parquet (mode=error/ignore/overwrite) or we can mention in options but with comma in btw and "" for all
+
+*** we can defien our schema and we can add our own schema ***
+////

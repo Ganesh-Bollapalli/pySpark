@@ -1,0 +1,15 @@
+import pyspark
+from pyspark.sql import SparkSession, Row
+spark=SparkSession.builder.appName("gani").getOrCreate()
+'''schema=["Name","age","source","destination"]
+data=[("David",22,"London","Paris"),("Steve",22,"New York", "sydney")]
+df=spark.createDataFrame(data, schema)
+df.show()'''
+#df.printSchema()
+#other way using instance/class
+passenger=Row("Name","age","source","destination")
+p1=passenger("David",22,"London","Paris")
+p2=passenger("Steve",22,"New York", "sydney")
+data=[p1,p2]
+df=spark.createDataFrame(data)
+df.show()

@@ -1,0 +1,27 @@
+import pyspark
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import avg, lit, count
+spark=SparkSession.builder.appName("ganesh").getOrCreate()
+cdf=spark.read.option("header","true").option("inferschema","true").format("csv").load('/projects/challenge/Census/demography.csv')
+cdf.printSchema()
+cdf.limit(5).show(truncate=False)
+# To make result alone as seperate df and write that alone to file
+AVG=cdf.groupBy().agg(avg("Total Population").alias("AVG"))
+AVG.show()
+AVG.write.parquet("/projects/challenge/avg")
+# To make AVG as new column and create new entire col df and write that df to file ( we cannot write result ot file, we can write only df to file)
+'''Result=cdf.groupBy().agg(avg("Total Population")).take(1)[0][0]
+print("Average population is ", Result)
+cdf1=cdf.select('*', lit(Result).alias("AVG"))
+cdf1.show()
+cdf1.write.parquet("/projects/challenge/avg")'''
+# To make result alone as seperate df and write that alone to file
+Total_sum=cdf.groupBy().agg(count("Total males").alias("Total_sum"))
+Total_sum.show()
+Total_sum.write.csv('/projects/challenge/males', header=True)
+# To make Total_sum as new column and create new entire col df and write that df to file ( we cannot write result ot file, we can write only df to file)
+'''Result1=cdf.groupBy().agg(count("Total males")).take(1)[0][0]
+print("Total males are ", Result1)
+cdf2=cdf.select('*', lit(Result1).alias("Total_sum"))
+cdf2.show()
+cdf2.write.csv("/projects/challenge/males", header=True)'''
